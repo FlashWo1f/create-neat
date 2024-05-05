@@ -1,0 +1,47 @@
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import logo from './assets/dog.svg'
+import './assets/App.css'
+
+function App() {
+  const [poetryStr, setPoetryStr] = useState('')
+
+  const getCNPoetry = () => {
+    fetch("https://v2.jinrishici.com/one.json")
+      .then(res => {
+        const json = res.json()
+        json.then(r => {
+          const { data: { content, origin } } = r
+          const { author, dynasty } = origin
+
+          poetryStr.value = `
+                    ${content}<br/>
+                                — [${dynasty}] ${author}
+                `
+        })
+      })
+  }
+	getCNPoetry()
+
+  return (
+    <>
+      <div>
+        <a href="https://github.com/xun082/create-neat" target="_blank">
+          <img src={logo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Create-Neat + <%- ReactEjs.name %></h1>
+      <p class="read-the-docs">
+        Create-Neat 是一个高扩展、低配置、开箱即用的脚手架工具
+      </p>
+      <div class="card">
+        <p id="poetry">{ poetryStr }</p>
+      </div>
+    </>
+  )
+}
+
+export default App

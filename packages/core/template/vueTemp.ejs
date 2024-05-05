@@ -1,0 +1,107 @@
+<template>
+	<div id="root">
+		
+		<div>
+      <a href="https://github.com/xun082/create-neat" target="_blank">
+        <img src='./assets/dog.svg' class="logo" alt="Dog logo" />
+      </a>
+      <a href="https://vuejs.org" target="_blank">
+        <img src='./assets/vue.svg' class="logo Vue" alt="Vue logo" />
+      </a>
+    </div>
+    <h1>Create-Neat + <%- VueEjs.name %></h1>
+    <p class="read-the-docs">
+      Create-Neat 是一个高扩展、低配置、开箱即用的脚手架工具
+    </p>
+    <div class="card">
+      <p id="poetry">{{ poetryStr }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+	import { ref } from 'vue'
+	const poetryStr = ref()
+  const getCNPoetry = () => {
+    fetch("https://v2.jinrishici.com/one.json")
+      .then(res => {
+        const json = res.json()
+        json.then(r => {
+          const { data: { content, origin } } = r
+          const { author, dynasty } = origin
+
+          poetryStr.value = `
+                    ${content}<br/>
+                                — [${dynasty}] ${author}
+                `
+        })
+      })
+  }
+	getCNPoetry()
+
+</script>
+
+<style scoped>
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color: rgba(255, 255, 255, 0.87);
+
+    background-image: url('./assets/texture.png');
+    background-color: #ddd;
+  }
+
+  a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+  }
+
+  a:hover {
+    color: #535bf2;
+  }
+
+  body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+    color: #333;
+  }
+
+  #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+  }
+
+  .card {
+    padding: 2em;
+  }
+
+  #poetry {
+    color: #666;
+    word-wrap: break-word;
+  }
+
+  .read-the-docs {
+    font-weight: 700;
+    font-size: 1.35em;
+    color: #161a25;
+  }
+
+</style>
